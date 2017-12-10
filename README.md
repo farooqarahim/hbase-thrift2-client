@@ -1,4 +1,4 @@
-A simple, performant, connection-pooled, cached and promisified HBase client library for NodeJS.
+A simple, performant, connection-pooled, cached and promisified HBase client library for NodeJS. This repository is forked from https://github.com/exposebox/node-thrift2-hbase. Original repository only supported thrift 0.9.3 to support 0.98.4. Hence, I forked this new repository to use thrift 0.10.0
 ---
 
 # API 
@@ -66,7 +66,7 @@ HBase.get('users', get, function (err, data) { //get users table
 ```
 A shorthand version is the `getRow` function:
 ```javascript
-HBase.getRow('users', 'row1', ['info:name', 'ecf'], 1,
+HBase.getRow('users', 'row1', ['info:name'], 1,
     function (err, data) {
         if (err) {
             console.log('error:', err);
@@ -82,7 +82,7 @@ HBase.getRow('users', 'row1', ['info:name', 'ecf'], 1,
         });
     });
 
-HBase.getRowAsync('users', 'row1', ['info:name', 'ecf'], 1)
+HBase.getRowAsync('users', 'row1', ['info:name'], 1)
     .then(function (data) {
         console.log("Data for user with key 'row1':");
         console.log('==============================');
@@ -134,7 +134,7 @@ HBase.putAsync('users', put)
 ```
 A shorthand version is the `putRow` function:
 ```javascript
-HBase.putRow('users', 'row1', 'info:name', 'phoneqq.com', 1414140874929,
+HBase.putRow('users', 'row1', 'info:name', { uid: { type: 'int64', value: 123456789 } }, 1414140874929,
     function (err) {
         if (err) {
             console.log('error:', err);
@@ -143,7 +143,7 @@ HBase.putRow('users', 'row1', 'info:name', 'phoneqq.com', 1414140874929,
         console.log('Put is successfull.');
     });
 
-HBase.putRowAsync('users', 'row1', 'info:name', 'phoneqq.com', 1414140874929)
+HBase.putRowAsync('users', 'row1', 'info:name', { uid: { type: 'int64', value: 123456789 } }, 1414140874929)
     .then(function () {
         console.log('Put is successfull.');
     })
@@ -273,18 +273,3 @@ salted using the given function. `hbase.saltFunctions` contains some ready-made 
 
 
 ---
-#### Working HBase-Thrift compiler combinations
-The code supplied here used Thrift 0.9.3 to generate code for HBase 0.98.4.
-If you'd like to use this library with different versions, download the desired HBase Thrift definition file and compile it using the Thrift compiler of your choice into the project's `gen-nodejs` folder.
-If you are successfully working with different HBase/Thrift compiler combination please tell us and we'll add the info here.
-
-HBase     |Thrift Compiler  |
-:--------:|:----------------:
-0.98.4    | 0.9.3           |
-1.1.2     | 0.9.3           |
-1.1.2     | 0.10.0          |
-
----
-
-**This library was initially based on https://www.npmjs.com/package/node-thrift-hbase but 
-due to that library's abandonment by the author we had to republish it with our contributions.**

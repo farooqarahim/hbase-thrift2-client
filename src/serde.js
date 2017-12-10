@@ -29,6 +29,8 @@ function serialize(valueObj) {
         case "long":
         case "int64":
             return valueObj.value.toBuffer(true);
+        case "buffer":
+            return valueObj.value;
         default:
             return valueObj.toString();
     }
