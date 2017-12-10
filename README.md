@@ -1,4 +1,4 @@
-A simple, performant, connection-pooled, cached and promisified HBase client library for NodeJS. This repository is forked from https://github.com/exposebox/node-thrift2-hbase. Original repository only supported thrift 0.9.3 to support 0.98.4. Hence, I forked this new repository to use thrift 0.10.0
+A simple, performant, connection-pooled, cached and promisified HBase client library for NodeJS. This repository is forked from https://github.com/exposebox/node-thrift2-hbase. Original repository only supported thrift 0.9.3 to support 0.98.4. Hence, I forked this new repository to use thrift 0.10.0 and HBase 1.2.x
 ---
 
 # API 
