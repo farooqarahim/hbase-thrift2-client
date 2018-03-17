@@ -1,6 +1,6 @@
 {
   "name": "hbase-thrift2-client",
-  "version": "0.2",
+  "version": "0.2.0",
   "description": "Easy to CRUD for hbase by using thrift 2",
   "main": "src/service.js",
   "dependencies": {
