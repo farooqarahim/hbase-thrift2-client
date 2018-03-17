@@ -1,18 +1,25 @@
 "use strict";
 
-var Int64 = require('node-int64');
 const _ = require('underscore');
 const serde = require('./serde');
+const Int64 = require('node-int64');
 
 class Scan {
     constructor(options) {
-        this.startRow = (options && options.startRow);
-        this.stopRow = (options && options.stopRow);
-        this.numRows = (options && options.numRows) || 10;
-        this.maxVersions = (options && options.maxVersions) || 1;
-        this.filterString = (options && options.filterString);
-        this.columns = [];
-        this.columnTypes = {};
+        Object.assign(this, this.getDefaultOptions(), options);
+    }
+
+    getDefaultOptions() {
+        return {
+            startRow: undefined,
+            stopRow: undefined,
+            numRows: 10,
+            maxVersions: 1,
+            filterString: undefined,
+            columns: [],
+            columnTypes: {},
+            chunkSize: undefined
+        };
     }
 
     setStartRow(startRow) {
@@ -27,6 +34,24 @@ class Scan {
 
     setLimit(numRows) {
         this.numRows = numRows;
+        return this;
+    };
+
+    setMaxVersions(maxVersions) {
+        if (maxVersions <= 0) {
+            maxVersions = 1;
+        }
+        this.maxVersions = maxVersions;
+        return this;
+    };
+
+    setFilterString(filterString) {
+        this.filterString = filterString;
+        return this;
+    };
+
+    setChunkSize(chunkSize) {
+        this.chunkSize = chunkSize;
         return this;
     };
 
@@ -71,19 +96,6 @@ class Scan {
             return obj;
         });
     }
-
-    setMaxVersions(maxVersions) {
-        if (maxVersions <= 0) {
-            maxVersions = 1;
-        }
-        this.maxVersions = maxVersions;
-        return this;
-    };
-
-    setFilterString(filterString) {
-        this.filterString = filterString;
-        return this;
-    };
 }
 
 module.exports = Scan;

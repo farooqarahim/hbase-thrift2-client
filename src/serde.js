@@ -1,13 +1,15 @@
+const Int64 = require('node-int64');
+
 function serialize(valueObj) {
     if (typeof valueObj != 'object') {
-        return valueObj.toString();
+        return new Buffer(valueObj.toString());
     }
 
     switch (valueObj.type) {
         case "string":
-            return valueObj.value.toString();
+            return new Buffer(valueObj.value.toString());
         case "json":
-            return JSON.stringify(valueObj.value);
+            return new Buffer(JSON.stringify(valueObj.value));
         case "integer":
         case "integer32":
             var buf = new Buffer(4);
@@ -16,6 +18,10 @@ function serialize(valueObj) {
         case "float":
             var buf = new Buffer(4);
             buf.writeFloatBE(valueObj.value, 0);
+            return buf;
+        case 'double':
+            var buf = new Buffer(8);
+            buf.writeDoubleBE(valueObj.value, 0);
             return buf;
         case "number":
         case "integer48":
@@ -26,13 +32,10 @@ function serialize(valueObj) {
             var buf = new Buffer(6);
             buf.writeUIntBE(valueObj.value, 0);
             return buf;
-        case "long":
         case "int64":
-            return valueObj.value.toBuffer(true);
-        case "buffer":
-            return valueObj.value;
+            return valueObj.value.buffer;
         default:
-            return valueObj.toString();
+            return new Buffer(valueObj.toString());
     }
 }
 
@@ -47,14 +50,15 @@ function deserialize(buf, type) {
             return buf.readInt32BE();
         case "float":
             return buf.readFloatBE();
+        case 'double':
+            return buf.readDoubleBE();
         case "number":
         case "integer48":
             return buf.readIntBE(2, 6);
         case "UInteger48":
             return buf.readUIntBE(0);
-        case "long":
         case "int64":
-            return buf.toBuffer(true);
+            return new Int64(buf);
         default:
             return buf.toString();
     }
